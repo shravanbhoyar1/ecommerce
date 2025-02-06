@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import { getHealth, isError } from './contollers/others/Other.js'
-
 dotenv.config();
+
+import User from './models/User.js';
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -18,6 +18,8 @@ const connectDB = async ()=>{
 
 }
 
+
+import { getHealth, isError } from './contollers/others/Other.js'
 app.get("/health",getHealth);
 
 app.post("/signup", async (req,res)=>{
@@ -65,6 +67,25 @@ app.post("/signup", async (req,res)=>{
         message:"Address is Required"
     });
    }
+
+   try{
+    const newUser = new User({
+        name,
+        email,
+        phone,
+        address,
+        password,
+       });
+       const saveUser = await newUser.save();
+       return res.json({
+        success:true,
+        message:"Signup Successfully",
+        data:saveUser
+       });
+   }
+  catch(error){
+    res.status(400).json({success:false, message:error.message});
+  }
 });
 
 app.get("*",isError);
