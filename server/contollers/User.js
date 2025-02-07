@@ -1,20 +1,5 @@
 import bcrypt from "bcrypt";
-import User from './../../models/User.js'
-
-const getHealth = (req,res)=>{
-    res.status(200).json({
-       success:true,
-       message:"server is running"
-    });
-   }
-
-const isError  = (req,res)=>{
-    res.status(400).json({
-        success:false,
-        message:"url is incorrect"
-    });
-}   
-
+import User from './../models/User.js'
 const signUp = async (req,res)=>{
     const {name,email,phone,address,password,rePassword} = req.body;
  
@@ -74,11 +59,21 @@ const signUp = async (req,res)=>{
         return res.json({
          success:true,
          message:"Signup Successfully",
-         data:saveUser
+         data:{
+            name:saveUser.name,
+            email:saveUser.email,
+            phone:saveUser.phone,
+            address:saveUser.address,
+         }
         });
     }
    catch(error){
      res.status(400).json({success:false, message:error.message});
    }
- }
-   export {getHealth, isError,signUp}
+}
+
+const login = async (req,res)=>{
+
+}
+
+export {signUp, login}
