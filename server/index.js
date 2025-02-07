@@ -18,13 +18,14 @@ const connectDB = async ()=>{
 }
 
 
-import { getHealth, isError} from './contollers/Other.js'
+import { getHealth, isError,test} from './contollers/Other.js'
 import { signUp, login} from './contollers/User.js';
 
 app.get("/health",getHealth);
 
 app.post("/signup", signUp);
 app.post("/login",login);
+app.get("/test",test);
 
 
 app.get("*",isError);
