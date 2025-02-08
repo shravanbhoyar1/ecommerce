@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
 const connectDB = async ()=>{
     const con = await mongoose.connect(process.env.MONGO_URI);
     if(con)
@@ -17,7 +18,7 @@ const connectDB = async ()=>{
 
 }
 
-
+//import { jwtVerifyMiddleware } from './middleware/auth.js';
 import { getHealth, isError,test} from './contollers/Other.js'
 import { signUp, login} from './contollers/User.js';
 
