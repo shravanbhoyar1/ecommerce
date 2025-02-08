@@ -1,5 +1,6 @@
+import Product from './../models/Product.js';
 
-const postProducts = (req, res) => {
+const postProducts = async (req, res) => {
 
     const { 
         name,
@@ -13,6 +14,7 @@ const postProducts = (req, res) => {
     } = req.body;
 
     // best way to learn verify field
+
     const manadatoryField = ["name","shortDescription","longDescription","price","currentPrice","category","images","tags"];
 
     for(const field of manadatoryField)
@@ -24,6 +26,31 @@ const postProducts = (req, res) => {
                 message:`${field} is required`
             });
         }
+    }
+
+    const newProduct = new Product({
+        name,
+        shortDescription,
+        longDescription,
+        price,
+        currentPrice,
+        category,
+        images,
+        tags
+    })
+
+    try{
+        const saveProduct = await newProduct.save();
+        return res.json({
+            success:true,
+            message:"Product created Successfully"
+        });
+    }catch(error)
+    {
+        res.status(400).json({
+            success:false,
+            message:error.message
+        });
     }
 
 }

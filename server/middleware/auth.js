@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 const jwtVerifyMiddleware = async (req,res,next)=>{
 
-    const jwtToken = req.headers.authorization.split(" ")[1];
+    const jwtToken = req.headers?.authorization?.split(" ")[1];
     if(!jwtToken)
     {
         res.status(401).json({
@@ -22,7 +22,21 @@ const jwtVerifyMiddleware = async (req,res,next)=>{
             message:"Inavlid Jwt token"
         });
     }
+};
 
+const checkRoleMiddleware = async (req,res,next)=>{
+    const userRole = req?.user?.role;
+    const method = req.method;
+    const path = req.path;
+
+    if(method=="POST" && path=="/product" && userRole!=="admin")
+    {
+        return res.status(403).json({
+          success:false,
+          message:"you are not authorized to perform this action"
+        });
+    }
+    next();
 }
 
-export {jwtVerifyMiddleware}
+export {jwtVerifyMiddleware,checkRoleMiddleware}

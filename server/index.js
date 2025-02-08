@@ -18,7 +18,7 @@ const connectDB = async ()=>{
 
 }
 
-//import { jwtVerifyMiddleware } from './middleware/auth.js';
+import { jwtVerifyMiddleware,checkRoleMiddleware } from './middleware/auth.js';
 import { getHealth, isError,test} from './contollers/Other.js'
 import { signUp, login} from './contollers/User.js';
 import { postProducts } from './contollers/Product.js';
@@ -28,7 +28,7 @@ app.get("/health",getHealth);
 app.post("/signup", signUp);
 app.post("/login",login);
 app.get("/test",test);
-app.post("/product",postProducts);
+app.post("/product",jwtVerifyMiddleware,checkRoleMiddleware,postProducts);
 
 
 app.get("*",isError);
